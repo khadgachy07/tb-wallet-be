@@ -1,7 +1,8 @@
-import { Controller, Post, Get, Param, Body } from '@nestjs/common';
+import { Controller, Post, Get, Body, Patch } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { LoginUserDto } from './dto/login-user.dto';
+import { UpdatePasswordDto } from './dto/update-password.dto';
 
 @Controller('users')
 export class UserController {
@@ -23,16 +24,20 @@ export class UserController {
     }
   }
 
-  @Get(':userId')
-  async getUserById(@Param('userId') userId: number) {
-    try {
-      const user = await this.userService.findOneUser(userId);
-      if (!user) {
-        return { message: 'User not found' };
-      }
+  @Get('find')
+  async findUserByEmail(@Body() updatePasswordDto: UpdatePasswordDto) {
+    const { email } = updatePasswordDto;
+    const user = await this.userService.findByEmail(email);
+    if (!user) {
+      throw new Error('User not found');
+    } else {
       return { message: 'User found', user };
-    } catch (error) {
-      return { message: 'Error retrieving user', error: error.message };
     }
+  }
+
+  @Patch('updatePassword')
+  async updatePassword(@Body() updatePasswordDto: UpdatePasswordDto) {
+    const data: any = await this.userService.updatePassword(updatePasswordDto);
+    return { message: 'Password updated.', data };
   }
 }
