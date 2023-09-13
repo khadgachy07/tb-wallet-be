@@ -6,27 +6,42 @@ import { CreateUserDto } from './dto/create-user.dto';
 import * as bcrypt from 'bcrypt';
 import { LoginUserDto } from './dto/login-user.dto';
 import { UpdatePasswordDto } from './dto/update-password.dto';
+import { WalletService } from '../wallet/wallet.service';
+import { WalletEntity } from '../wallet/entities/wallet.entity';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectRepository(UserEntity)
     private userRepository: Repository<UserEntity>,
+
+    @InjectRepository(WalletEntity)
+    private walletRepository: Repository<WalletEntity>,
+
+    private walletService: WalletService,
   ) {}
 
   async createUser(createUserDto: CreateUserDto): Promise<UserEntity> {
     const { password, ...rest } = createUserDto;
-    try {
-      const encryptedPass = await this.encryptPassword(password);
-      const user = await this.userRepository.create({
-        ...rest,
-        encryptedPassword: encryptedPass,
-      });
-      await this.userRepository.save(user);
-      return user;
-    } catch (error) {
-      throw new Error('Error creating user');
+
+    const encryptedPass = await this.encryptPassword(password);
+    const bitAddress = await this.walletService.generateBitcoinLikeAddress();
+    const ethAddress = await this.walletService.generateEthereumLikeAddress();
+    if (!bitAddress && !ethAddress) {
+      throw new Error('Error generating wallet address');
     }
+    const wallet = new WalletEntity();
+    wallet.bitAddress = bitAddress;
+    wallet.ethAddress = ethAddress;
+    wallet.btcBalance = 0;
+    wallet.ethBalance = 0;
+    const walletInfo = await this.walletRepository.save(wallet);
+    const user = await this.userRepository.save({
+      ...rest,
+      encryptedPassword: encryptedPass,
+      wallet: walletInfo,
+    });
+    return user;
   }
 
   async findAll(): Promise<UserEntity[]> {

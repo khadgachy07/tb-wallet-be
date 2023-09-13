@@ -1,5 +1,13 @@
-import { Column, Entity, Index, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  Index,
+  JoinColumn,
+  OneToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { UserType } from '../enum/user-type.enum';
+import { WalletEntity } from '../../wallet/entities/wallet.entity';
 
 @Entity('users')
 export class UserEntity {
@@ -19,6 +27,10 @@ export class UserEntity {
 
   @Column()
   encryptedPassword!: string;
+
+  @OneToOne((type) => WalletEntity, (wallet) => wallet.user)
+  @JoinColumn({ name: 'walletId' })
+  wallet: WalletEntity;
 
   @Column({ default: UserType.USER })
   userType: UserType;
