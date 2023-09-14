@@ -7,6 +7,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { UserEntity } from '../../user/entities/user.entity';
+import { CardEntity } from '../../card/entities/card.entity';
 
 @Entity('wallet')
 export class WalletEntity {
@@ -29,4 +30,8 @@ export class WalletEntity {
 
   @OneToOne((type) => UserEntity, (user) => user.wallet)
   user: UserEntity;
+
+  @OneToOne((type) => CardEntity, (card) => card.wallet)
+  @JoinColumn({ name: 'cardId' })
+  card: CardEntity;
 }

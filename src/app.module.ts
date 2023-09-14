@@ -7,6 +7,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { databaseConfig } from 'database.config';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { WalletModule } from './modules/wallet/wallet.module';
+import { CardModule } from './modules/card/card.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { WalletModule } from './modules/wallet/wallet.module';
     }),
     UserModule,
     WalletModule,
+    CardModule,
   ],
   controllers: [AppController],
   providers: [AppService, ConfigService],
