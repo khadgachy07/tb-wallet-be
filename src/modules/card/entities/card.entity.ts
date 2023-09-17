@@ -1,13 +1,13 @@
 import {
   Column,
+  CreateDateColumn,
   Entity,
-  JoinColumn,
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { CardStatus } from '../enum/card_status.enum';
 import { CardType } from '../enum/card_type.enum';
-import { WalletEntity } from '../../wallet/entities/wallet.entity';
+import { UserEntity } from '../../user/entities/user.entity';
 
 @Entity('card')
 export class CardEntity {
@@ -15,23 +15,26 @@ export class CardEntity {
   cardId: number;
 
   @Column({ unique: true })
-  cardNumber: number;
+  cardNumber: string;
 
   @Column()
   cardHolder: string;
 
   @Column()
-  cvv: number;
+  cvv: string;
 
-  @Column()
-  expiryDate: string;
+  @CreateDateColumn({
+    type: 'date',
+    default: () => `NOW() + INTERVAL '1 year'`,
+  })
+  expiryDate: Date;
 
   @Column({ default: CardStatus.INACTIVE })
   cardStatus: CardStatus;
 
-  @Column({ default: CardType.CLASSIC })
+  @Column({ default: CardType.INACTIVE })
   cardType: CardType;
 
-  @OneToOne((type) => WalletEntity, (wallet) => wallet.card)
-  wallet: WalletEntity;
+  @OneToOne((type) => UserEntity, (user) => user.card)
+  user: UserEntity;
 }

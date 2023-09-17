@@ -2,12 +2,10 @@ import {
   Column,
   Entity,
   Index,
-  JoinColumn,
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { UserEntity } from '../../user/entities/user.entity';
-import { CardEntity } from '../../card/entities/card.entity';
 
 @Entity('wallet')
 export class WalletEntity {
@@ -15,23 +13,19 @@ export class WalletEntity {
   walletId: number;
 
   @Index()
-  @Column({ unique: true, nullable: false })
+  @Column({ unique: true })
   bitAddress: string;
 
   @Index()
-  @Column({ unique: true, nullable: false })
+  @Column({ unique: true })
   ethAddress: string;
 
-  @Column()
+  @Column({ default: 0, nullable: false })
   btcBalance: number;
 
-  @Column()
+  @Column({ default: 0, nullable: false })
   ethBalance: number;
 
   @OneToOne((type) => UserEntity, (user) => user.wallet)
   user: UserEntity;
-
-  @OneToOne((type) => CardEntity, (card) => card.wallet)
-  @JoinColumn({ name: 'cardId' })
-  card: CardEntity;
 }

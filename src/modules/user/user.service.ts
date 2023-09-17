@@ -8,6 +8,7 @@ import { LoginUserDto } from './dto/login-user.dto';
 import { UpdatePasswordDto } from './dto/update-password.dto';
 import { WalletService } from '../wallet/wallet.service';
 import { WalletEntity } from '../wallet/entities/wallet.entity';
+import { CardService } from '../card/card.service';
 
 @Injectable()
 export class UserService {
@@ -19,27 +20,24 @@ export class UserService {
     private walletRepository: Repository<WalletEntity>,
 
     private walletService: WalletService,
+
+    private cardService: CardService,
   ) {}
 
   async createUser(createUserDto: CreateUserDto): Promise<UserEntity> {
     const { password, ...rest } = createUserDto;
 
     const encryptedPass = await this.encryptPassword(password);
-    const bitAddress = await this.walletService.generateBitcoinLikeAddress();
-    const ethAddress = await this.walletService.generateEthereumLikeAddress();
-    if (!bitAddress && !ethAddress) {
-      throw new Error('Error generating wallet address');
-    }
-    const wallet = new WalletEntity();
-    wallet.bitAddress = bitAddress;
-    wallet.ethAddress = ethAddress;
-    wallet.btcBalance = 0;
-    wallet.ethBalance = 0;
-    const walletInfo = await this.walletRepository.save(wallet);
+    const walletInfo = await this.walletService.createWallet();
+    const newCard = await this.cardService.create(
+      createUserDto.firstName,
+      createUserDto.lastName,
+    );
     const user = await this.userRepository.save({
       ...rest,
       encryptedPassword: encryptedPass,
       wallet: walletInfo,
+      card: newCard,
     });
     return user;
   }
