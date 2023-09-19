@@ -68,9 +68,11 @@ export class WalletController {
           ethBalance,
         );
       } else {
-        return { message: 'Error Updating Balance', error: Error };
+        return { message: 'Error Updating Balance' };
       }
-    } catch (error) {}
+    } catch (error) {
+      return { message: 'Error Updating Balance' };
+    }
   }
 
   @Patch('debitBalance')
