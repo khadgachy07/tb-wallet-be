@@ -6,7 +6,8 @@ import { UserModule } from './modules/user/user.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { databaseConfig } from 'database.config';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { UserEntity } from './modules/user/entities/user.entity';
+import { WalletModule } from './modules/wallet/wallet.module';
+import { CardModule } from './modules/card/card.module';
 
 @Module({
   imports: [
@@ -17,6 +18,8 @@ import { UserEntity } from './modules/user/entities/user.entity';
       envFilePath: ['.env', '.env.development'],
     }),
     UserModule,
+    WalletModule,
+    CardModule,
   ],
   controllers: [AppController],
   providers: [AppService, ConfigService],
