@@ -3,12 +3,14 @@ import {
   Entity,
   Index,
   JoinColumn,
+  OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { UserType } from '../enum/user-type.enum';
 import { WalletEntity } from '../../wallet/entities/wallet.entity';
 import { CardEntity } from '../../card/entities/card.entity';
+import { TransactionEntity } from '../../transaction/entities/transaction.entity';
 
 @Entity('users')
 export class UserEntity {
@@ -36,6 +38,9 @@ export class UserEntity {
   @OneToOne((type) => CardEntity, (card) => card.user)
   @JoinColumn({ name: 'cardId' })
   card: CardEntity;
+
+  @OneToMany((type) => TransactionEntity, (transactions) => transactions.user)
+  transactions: TransactionEntity[];
 
   @Column({ default: UserType.USER })
   userType: UserType;
