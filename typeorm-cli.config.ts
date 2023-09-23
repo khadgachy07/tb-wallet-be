@@ -1,7 +1,6 @@
 import { join } from 'path';
 import { DataSource } from 'typeorm';
 
-
 export default new DataSource({
   type: 'postgres',
   host: process.env.DB_HOST || 'dpg-ck7enivsasqs73almqj0-a',
