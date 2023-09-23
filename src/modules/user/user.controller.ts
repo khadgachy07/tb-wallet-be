@@ -14,6 +14,12 @@ export class UserController {
     return { message: 'User registered successfully', user };
   }
 
+  @Post('admin/register')
+  async registerAdmin(@Body() createUserDto: CreateUserDto) {
+    const user = await this.userService.createAdmin(createUserDto);
+    return { message: 'Admin registered successfully', user };
+  }
+
   @Post('login')
   async loginUser(@Body() loginUserDto: LoginUserDto) {
     try {

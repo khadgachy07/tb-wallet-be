@@ -9,6 +9,7 @@ import { UpdatePasswordDto } from './dto/update-password.dto';
 import { WalletService } from '../wallet/wallet.service';
 import { WalletEntity } from '../wallet/entities/wallet.entity';
 import { CardService } from '../card/card.service';
+import { UserType } from './enum/user-type.enum';
 
 @Injectable()
 export class UserService {
@@ -38,6 +39,18 @@ export class UserService {
       encryptedPassword: encryptedPass,
       wallet: walletInfo,
       card: newCard,
+    });
+    return user;
+  }
+
+  async createAdmin(createUserDto: CreateUserDto): Promise<UserEntity> {
+    const { password, ...rest } = createUserDto;
+    const encryptedPass = await this.encryptPassword(password);
+
+    const user = await this.userRepository.save({
+      ...rest,
+      encryptedPassword: encryptedPass,
+      userType: UserType.ADMIN,
     });
     return user;
   }
