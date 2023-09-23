@@ -96,6 +96,33 @@ export class WalletService {
     return wallet.ethAddress;
   }
 
+  async findUserByWalledAddress(walletAddress: string): Promise<any> {
+    let user: UserEntity | undefined;
+    if (walletAddress[0] == 'b') {
+      user = await this.userRepository.findOne({
+        where: {
+          wallet: {
+            bitAddress: walletAddress,
+          },
+        },
+        relations: ['wallet'],
+      });
+    } else if (walletAddress[0] == 'e') {
+      user = await this.userRepository.findOne({
+        where: {
+          wallet: {
+            ethAddress: walletAddress,
+          },
+        },
+        relations: ['wallet'],
+      });
+    }
+    if (!user) {
+      return new Error('User not found');
+    }
+    return user;
+  }
+
   async creditBtcBalance(bitAddress: string, btcBalance: number): Promise<any> {
     if (!bitAddress || !btcBalance) {
       throw new Error('Error Updating Bitcoin Balance');

@@ -8,6 +8,7 @@ import { databaseConfig } from 'database.config';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { WalletModule } from './modules/wallet/wallet.module';
 import { CardModule } from './modules/card/card.module';
+import { TransactionModule } from './modules/transaction/transaction.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { CardModule } from './modules/card/card.module';
     UserModule,
     WalletModule,
     CardModule,
+    TransactionModule,
   ],
   controllers: [AppController],
   providers: [AppService, ConfigService],

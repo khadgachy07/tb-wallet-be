@@ -7,11 +7,20 @@ import { WalletEntity } from '../wallet/entities/wallet.entity';
 import { WalletService } from '../wallet/wallet.service';
 import { CardEntity } from '../card/entities/card.entity';
 import { CardService } from '../card/card.service';
+import { TransactionEntity } from '../transaction/entities/transaction.entity';
+import { TransactionService } from '../transaction/transaction.service';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([UserEntity, WalletEntity, CardEntity])],
+  imports: [
+    TypeOrmModule.forFeature([
+      UserEntity,
+      WalletEntity,
+      CardEntity,
+      TransactionEntity,
+    ]),
+  ],
   controllers: [UserController],
-  providers: [UserService, WalletService, CardService],
+  providers: [UserService, WalletService, CardService, TransactionService],
   exports: [UserService],
 })
 export class UserModule {}
