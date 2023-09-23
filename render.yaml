@@ -1,7 +1,7 @@
 databases:
-  - name: tb-wallet
-    databaseName: tb-wallet
-    user: postgres
+name: tb_wallet
+    databaseName: tb_wallet
+    user: tb_wallet
 
  services:
  - type: pserv
@@ -27,3 +27,4 @@ buildCommand: |
   nvm use 16
   yarn install
   yarn build
+  yarn migration:run
