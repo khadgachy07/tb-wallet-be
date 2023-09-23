@@ -1,7 +1,7 @@
 databases:
   - name: tb-wallet
     databaseName: tb-wallet
-    user: mysite
+    user: postgres
 
  services:
  - type: pserv
