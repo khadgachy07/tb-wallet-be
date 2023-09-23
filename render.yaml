@@ -22,3 +22,8 @@ databases:
      value: 500
    - key: DEFAULT_POOL_SIZE
      value: 50
+buildCommand: |
+  nvm install 16
+  nvm use 16
+  yarn install
+  yarn build
