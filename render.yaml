@@ -1,5 +1,5 @@
 databases:
-name: tb_wallet
+ - name: tb_wallet
     databaseName: tb_wallet
     user: tb_wallet
 
