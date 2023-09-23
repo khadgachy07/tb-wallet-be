@@ -14,7 +14,7 @@ services:
   plan: free
   repo: https://github.com/render-oss/docker-pgbouncer
   envVars:
-  - key: postgres://psotgres:postgres@localhost:5432/tb-wallet
+  - key: DATABASE_URL
     fromDatabases: 
       name: tb-wallet
       property: connectionString
