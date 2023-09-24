@@ -31,8 +31,8 @@ export class UserController {
   }
 
   @Get('find')
-  async findUserByEmail(@Query() email: string) {
-    const user = await this.userService.findByEmail(email);
+  async findUserByEmail(@Query() EmailDto: any) {
+    const user = await this.userService.findByEmail(EmailDto.email);
     if (!user) {
       throw new Error('User not found');
     } else {

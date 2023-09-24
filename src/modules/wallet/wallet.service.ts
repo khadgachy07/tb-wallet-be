@@ -96,7 +96,7 @@ export class WalletService {
     return wallet.ethAddress;
   }
 
-  async findUserByWalledAddress(walletAddress: string): Promise<any> {
+  async findUserByWalletAddress(walletAddress: string): Promise<any> {
     let user: UserEntity | undefined;
     if (walletAddress[0] == 'b') {
       user = await this.userRepository.findOne({
@@ -203,6 +203,59 @@ export class WalletService {
       },
     );
     return wallet;
+  }
+
+  async findWalletByEmail(email: string): Promise<any> {
+    if (!email) {
+      throw new Error('Error Getting Email');
+    }
+    const user = await this.userRepository.findOne({
+      where: {
+        email,
+      },
+    });
+    if (!user) {
+      throw new Error('User not found');
+    }
+    const wallet = await this.walletRepository.findOne({
+      where: {
+        user,
+      },
+    });
+    if (!wallet) {
+      throw new Error('Wallet not found');
+    }
+    return wallet;
+  }
+
+  async findUserByWallet(walletDto: any): Promise<any> {
+    if (!walletDto.bitAddress && !walletDto.ethAddress) {
+      throw new Error('Error Getting Wallet');
+    }
+    let user: UserEntity | undefined;
+    if (walletDto.bitAddress) {
+      user = await this.userRepository.findOne({
+        where: {
+          wallet: {
+            bitAddress: walletDto.bitAddress,
+          },
+        },
+        relations: ['wallet'],
+      });
+    } else if (walletDto.ethAddress) {
+      user = await this.userRepository.findOne({
+        where: {
+          wallet: {
+            ethAddress: walletDto.ethAddress,
+          },
+        },
+        relations: ['wallet'],
+      });
+    }
+    if (!user) {
+      throw new Error('User not found');
+    }
+    return user;
   }
 
   generateBitcoinLikeAddress(): string {

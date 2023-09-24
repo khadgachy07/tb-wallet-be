@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Patch } from '@nestjs/common';
+import { Body, Controller, Get, Patch, Query } from '@nestjs/common';
 import { WalletService } from './wallet.service';
 import { WalletDto } from './dto/wallet.dto';
 import { GetAddressDto } from './dto/get_address.dto';
@@ -7,8 +7,35 @@ import { GetAddressDto } from './dto/get_address.dto';
 export class WalletController {
   constructor(private readonly walletService: WalletService) {}
 
+  @Get('find')
+  async findWalletByEmail(@Query() EmailDto: any) {
+    try {
+      const wallet = await this.walletService.findWalletByEmail(EmailDto.email);
+      return wallet;
+    } catch (error) {
+      return {
+        message: `Wallet not found with Email: ${EmailDto.email}`,
+        error: error.message,
+      };
+    }
+  }
+
+  @Get('findUserByWallet')
+  async findUserByWallet(@Query() walletDto: WalletDto): Promise<any> {
+    try {
+      const user = await this.walletService.findUserByWallet(walletDto);
+      return user;
+    } catch (error) {
+      return {
+        message: `User not found with Wallet: ${walletDto.bitAddress} or ${walletDto.ethAddress}`,
+        error: error.message,
+      };
+    }
+  }
+
   @Get('findByBit')
-  async findWalletByBitAddress(@Body() walletDto: WalletDto): Promise<any> {
+  async findWalletByBitAddress(@Query() walletDto: WalletDto): Promise<any> {
+    console.log(walletDto.bitAddress);
     try {
       const wallet = await this.walletService.findWalletbyBitAddress(
         walletDto.bitAddress,
@@ -23,7 +50,7 @@ export class WalletController {
   }
 
   @Get('findByEth')
-  async findWalletByEthAddress(@Body() walletDto: WalletDto): Promise<any> {
+  async findWalletByEthAddress(@Query() walletDto: WalletDto): Promise<any> {
     try {
       const wallet = await this.walletService.findWalletbyEthAddress(
         walletDto.ethAddress,
@@ -38,7 +65,7 @@ export class WalletController {
   }
 
   @Get('getBitAddress')
-  async getBitAddress(@Body() getAddressDto: GetAddressDto): Promise<string> {
+  async getBitAddress(@Query() getAddressDto: GetAddressDto): Promise<string> {
     if (!getAddressDto.email) {
       throw new Error('Email is required');
     }
