@@ -1,4 +1,4 @@
-import { Controller, Post, Get, Body, Patch } from '@nestjs/common';
+import { Controller, Post, Get, Body, Patch, Query } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { LoginUserDto } from './dto/login-user.dto';
@@ -31,8 +31,7 @@ export class UserController {
   }
 
   @Get('find')
-  async findUserByEmail(@Body() updatePasswordDto: UpdatePasswordDto) {
-    const { email } = updatePasswordDto;
+  async findUserByEmail(@Query() email: string) {
     const user = await this.userService.findByEmail(email);
     if (!user) {
       throw new Error('User not found');
