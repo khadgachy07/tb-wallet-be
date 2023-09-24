@@ -96,7 +96,7 @@ export class WalletService {
     return wallet.ethAddress;
   }
 
-  async findUserByWalledAddress(walletAddress: string): Promise<any> {
+  async findUserByWalletAddress(walletAddress: string): Promise<any> {
     let user: UserEntity | undefined;
     if (walletAddress[0] == 'b') {
       user = await this.userRepository.findOne({
