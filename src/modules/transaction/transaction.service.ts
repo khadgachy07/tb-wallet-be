@@ -27,7 +27,7 @@ export class TransactionService {
     user: UserEntity,
   ) {
     const senderUser = await this.userService.findByEmail(email);
-    const receiverUser = await this.walletService.findUserByWalledAddress(
+    const receiverUser = await this.walletService.findUserByWalletAddress(
       walletAddress,
     );
     let pay_method: PayMethod;
@@ -77,7 +77,7 @@ export class TransactionService {
     amount: number,
     walletAddress: string,
   ) {
-    const receiverUser = await this.walletService.findUserByWalledAddress(
+    const receiverUser = await this.walletService.findUserByWalletAddress(
       walletAddress,
     );
     const transaction = await this.createTransaction(
