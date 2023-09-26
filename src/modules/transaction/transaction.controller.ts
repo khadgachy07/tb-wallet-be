@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query } from '@nestjs/common';
 import { TransactionDto } from './dto/transaction.dto';
 import { TransactionService } from './transaction.service';
 
@@ -24,7 +24,7 @@ export class TransactionController {
   }
 
   @Get('getTransaction')
-  async findAllTransactionOfUser(@Body() transactionDto: TransactionDto) {
+  async findAllTransactionOfUser(@Query() transactionDto: TransactionDto) {
     const { email } = transactionDto;
     return await this.transactionService.findAllTransactionOfUser(email);
   }
