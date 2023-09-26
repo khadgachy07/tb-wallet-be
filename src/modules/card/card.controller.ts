@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Patch } from '@nestjs/common';
+import { Body, Controller, Get, Patch, Query } from '@nestjs/common';
 import { CardService } from './card.service';
 import { UpdateCardDto } from './dto/update_card.dto';
 
@@ -7,7 +7,7 @@ export class CardController {
   constructor(private readonly cardService: CardService) {}
 
   @Get('/findByEmail')
-  async findCardByEmail(@Body() updateCardDto: UpdateCardDto): Promise<any> {
+  async findCardByEmail(@Query() updateCardDto: UpdateCardDto): Promise<any> {
     const { email } = updateCardDto;
     try {
       const card = await this.cardService.findCardByEmail(email);
