@@ -9,6 +9,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { WalletModule } from './modules/wallet/wallet.module';
 import { CardModule } from './modules/card/card.module';
 import { TransactionModule } from './modules/transaction/transaction.module';
+import { RequestModule } from './modules/request/request.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { TransactionModule } from './modules/transaction/transaction.module';
     WalletModule,
     CardModule,
     TransactionModule,
+    RequestModule,
   ],
   controllers: [AppController],
   providers: [AppService, ConfigService],

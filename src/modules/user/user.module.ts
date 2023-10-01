@@ -9,6 +9,8 @@ import { CardEntity } from '../card/entities/card.entity';
 import { CardService } from '../card/card.service';
 import { TransactionEntity } from '../transaction/entities/transaction.entity';
 import { TransactionService } from '../transaction/transaction.service';
+import { RequestEntity } from '../request/entities/request.entity';
+import { RequestService } from '../request/request.service';
 
 @Module({
   imports: [
@@ -17,10 +19,17 @@ import { TransactionService } from '../transaction/transaction.service';
       WalletEntity,
       CardEntity,
       TransactionEntity,
+      RequestEntity,
     ]),
   ],
   controllers: [UserController],
-  providers: [UserService, WalletService, CardService, TransactionService],
+  providers: [
+    UserService,
+    WalletService,
+    CardService,
+    TransactionService,
+    RequestService,
+  ],
   exports: [UserService],
 })
 export class UserModule {}

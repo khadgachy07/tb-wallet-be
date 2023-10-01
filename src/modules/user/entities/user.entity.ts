@@ -11,6 +11,7 @@ import { UserType } from '../enum/user-type.enum';
 import { WalletEntity } from '../../wallet/entities/wallet.entity';
 import { CardEntity } from '../../card/entities/card.entity';
 import { TransactionEntity } from '../../transaction/entities/transaction.entity';
+import { RequestEntity } from '../../request/entities/request.entity';
 
 @Entity('users')
 export class UserEntity {
@@ -41,6 +42,9 @@ export class UserEntity {
 
   @OneToMany((type) => TransactionEntity, (transactions) => transactions.user)
   transactions: TransactionEntity[];
+
+  @OneToMany((type) => RequestEntity, (requests) => requests.user)
+  requests: RequestEntity[];
 
   @Column({ default: UserType.USER })
   userType: UserType;
