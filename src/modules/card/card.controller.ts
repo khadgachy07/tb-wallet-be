@@ -26,4 +26,17 @@ export class CardController {
     }
     return updatedCard;
   }
+
+  @Patch('/updateCard/inactive')
+  async updateCardInactive(@Body() updateCardDto: UpdateCardDto): Promise<any> {
+    const { email, cardType } = updateCardDto;
+    const updatedCard = await this.cardService.updateCardInactive(
+      email,
+      cardType,
+    );
+    if (!updatedCard) {
+      return { message: 'Error Updating Card' };
+    }
+    return updatedCard;
+  }
 }
