@@ -76,6 +76,20 @@ export class CardService {
     return card;
   }
 
+  async updateCardInactive(email: string, cardType: CardType): Promise<any> {
+    const card = await this.findCardByEmail(email);
+    if (!card) {
+      return { message: 'Card not found' };
+    }
+    card.cardStatus = 'INACTIVE';
+    if (!Object.values(CardType).includes(cardType)) {
+      return { message: 'Card type not found in Category' };
+    }
+    card.cardType = cardType;
+    await this.cardRepository.save(card);
+    return card;
+  }
+
   generateCardNumber(): string {
     const cardNumber = Array.from({ length: 16 }, () => randomInt(0, 9)).join(
       '',
